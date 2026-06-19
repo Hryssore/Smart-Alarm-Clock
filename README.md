@@ -1,77 +1,79 @@
-# AlarmClock
+# ChronoGuard
 
-AlarmClock is a compact Arduino-based bedside clock built as an embedded systems project.  
-It combines a real-time clock, LCD user interface, alarm features, environment monitoring, stopwatch, and countdown timer in one small device.
+ChronoGuard is a smart alarm clock built on Arduino Uno.
 
-This project was made with a simple goal: build a clock that is useful, understandable, and easy to explain during presentation or defense.
+What started as a clock became a complete state-machine project with persistent
+settings, sensors, security, timers and enough wires to make the breadboard
+look mildly concerned.
 
-## What this project can do
+## Features
 
-- show current time and date
-- store time using RTC backup battery
-- set and save an alarm
-- stop alarm with a button
-- snooze alarm by adding or subtracting minutes
-- display temperature and humidity from DHT11
-- run a stopwatch
-- run a countdown timer
-- show seconds and hundredths in stopwatch mode
-- provide a simple first-setup guide after reset
+- Current time and date using an RTC module
+- Time and date configuration with physical buttons
+- Persistent alarm stored in EEPROM
+- Buzzer and RGB alarm notification
+- Five-minute Snooze
+- Countdown timer with hundredths of a second
+- Stopwatch with pause, resume and reset
+- Temperature and humidity monitoring
+- Password protection using buttons or Serial Monitor
+- Password changing through Serial Monitor
+- Demo mode with automatic screen rotation
+- Sleep mode after inactivity
+- Automatic nightlight controlled by an LDR
+- Persistent nightlight state and running time
+- Factory reset
+- Two-line LCD interface with custom characters
 
-## Hardware used
+## Controls
+
+- Button 1: decrease value
+- Button 2: increase value
+- Button 3: cancel, reset or move to the next state
+- Button 4: confirm, start, pause or resume
+
+The exact action depends on the current state.
+
+## Project Structure
+
+- `src/main.cpp` contains the main state machine
+- `src/screens/` contains individual application states
+- `src/rtc_wrapper.cpp` controls the RTC module
+- `src/lcd_wrapper.cpp` provides the LCD interface
+- `src/sensors.cpp` reads temperature and humidity
+- `include/context.h` stores runtime state without global variables
+- `include/config.h` contains the hardware pin configuration
+
+## Data Storage
+
+The RTC module keeps real time running independently.
+
+EEPROM stores:
+
+- Alarm time
+- Timer state
+- Stopwatch state
+- Password
+- First-setup state
+- Nightlight state and elapsed time
+
+This allows important settings to survive power loss.
+
+## Hardware
 
 - Arduino Uno
-- RTC module
 - 16x2 I2C LCD
-- DHT11 sensor
-- buzzer
-- buttons
+- DS1302 RTC
+- DHT11 temperature and humidity sensor
+- LDR photoresistor
 - RGB LED
+- Passive buzzer
+- Four buttons
+- Approximately 35-40 wires and a respectable amount of patience
 
-## Interface
+## Serial Monitor
 
-The device is controlled only with buttons, so the whole menu works directly on the LCD.
+Default baud rate:
 
-You can:
-- switch between modes
-- edit time and date
-- set alarm values
-- start or stop stopwatch
-- set countdown timer
-- snooze alarm without resetting everything
-
-## Main modes
-
-- clock
-- date
-- alarm
-- environment
-- stopwatch
-- countdown timer
-- factory reset / first setup
-
-## Why this project is interesting
-
-This is not just another digital clock.  
-The main idea of the project is to combine several practical embedded features into one device while keeping the code readable and the behavior stable.
-
-The project focuses on:
-- state machine logic
-- RTC time handling
-- EEPROM saving
-- button debounce
-- LCD rendering without unnecessary flicker
-- simple embedded-friendly code style
-
-## Build
-
-The project is built with PlatformIO and Arduino framework.
-
-## Notes
-
-The code was written in a simple embedded style without unnecessary overengineering.  
-The goal was to keep the project practical, explainable, and suitable for school presentation as well as further extension.
-
-## Author
-
-Student embedded systems project based on Arduino and PlatformIO.
+```text
+9600
